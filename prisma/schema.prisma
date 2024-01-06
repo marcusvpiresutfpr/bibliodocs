@@ -12,29 +12,29 @@ datasource db {
 }
 
 model Article {
-  id         String   @id @default(uuid())
-  title      String
-  content    String
-  views      Int      @default(0)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  category   Category @relation(fields: [categoryId], references: [id])
-  categoryId String
+  id           String   @id @default(uuid())
+  title        String
+  content      String
+  views        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  category     Category @relation(fields: [categoryName], references: [name])
+  categoryName String
 }
 
 model Formula {
-  id         String   @id @default(uuid())
-  name       String
-  content    Json
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  category   Category @relation(fields: [categoryId], references: [id])
-  categoryId String
+  id           String   @id @default(uuid())
+  name         String
+  content      Json
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  category     Category @relation(fields: [categoryName], references: [name])
+  categoryName String
 }
 
 model Category {
   id        String    @id @default(uuid())
-  name      String
+  name      String    @unique
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   articles  Article[]
