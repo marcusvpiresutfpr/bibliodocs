@@ -7,11 +7,8 @@ import { useForm, Controller } from "react-hook-form";
 import { articleSchema } from "@/services/schemas";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-const exampleOptions = new Array(100).fill(0).map((_, i) => ({
-  name: `option ${i}`,
-}));
-
 const MyForm = () => {
+  const [categories, setCategories] = React.useState([]);
   const {
     register,
     handleSubmit,
@@ -22,18 +19,39 @@ const MyForm = () => {
     resolver: yupResolver(articleSchema),
   });
 
+  React.useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("/api/categories");
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   const onSubmit = (data: any) => {
     console.log(data);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base-100" onSubmit={handleSubmit(onSubmit)}>
+    <div
+      className="min-h-screen flex items-center justify-center bg-base-100"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <form className="hero-content flex-col items-start max-w-lg w-full">
         <div className="form-control w-full">
           <label className="label">
             <span className="label-text">Título</span>
           </label>
-          <input autoComplete="off" className="input input-bordered" {...register("título")} />
+          <input
+            autoComplete="off"
+            className="input input-bordered"
+            {...register("título")}
+          />
           <label className="label">
             <span className="label-text text-error">
               {errors.título && <p>{errors.título.message}</p>}
@@ -44,7 +62,11 @@ const MyForm = () => {
           <label className="label">
             <span className="label-text">Conteúdo</span>
           </label>
-          <textarea autoComplete="off" className="textarea textarea-bordered" {...register("conteúdo")} />
+          <textarea
+            autoComplete="off"
+            className="textarea textarea-bordered"
+            {...register("conteúdo")}
+          />
           <label>
             <span className="label-text text-error">
               {errors.conteúdo && <p>{errors.conteúdo.message}</p>}
@@ -62,7 +84,7 @@ const MyForm = () => {
             render={({ field }) => (
               <AutocompleteInput
                 field={field}
-                categories={exampleOptions}
+                categories={categories}
                 setValue={setValue}
               />
             )}
@@ -73,8 +95,10 @@ const MyForm = () => {
             </span>
           </label>
         </div>
-        
-        <button className="btn mt-6" type="submit">Criar novo artigo</button>
+
+        <button className="btn mt-6" type="submit">
+          Criar novo artigo
+        </button>
       </form>
     </div>
   );
