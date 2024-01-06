@@ -11,17 +11,6 @@ datasource db {
   directUrl = env("DATABASE_URL_NON_POOLING")
 }
 
-model User {
-  id        String    @id @default(uuid())
-  email     String    @unique
-  password  String
-  name      String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  articles  Article[]
-  Session   Session[]
-}
-
 model Article {
   id         String   @id @default(uuid())
   title      String
@@ -31,8 +20,6 @@ model Article {
   updatedAt  DateTime @updatedAt
   category   Category @relation(fields: [categoryId], references: [id])
   categoryId String
-  author     User     @relation(fields: [authorId], references: [id])
-  authorId   String
 }
 
 model Formula {
@@ -43,15 +30,6 @@ model Formula {
   updatedAt  DateTime @updatedAt
   category   Category @relation(fields: [categoryId], references: [id])
   categoryId String
-}
-
-model Session {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  expiresAt DateTime
-  handle    String   @unique
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
 }
 
 model Category {
