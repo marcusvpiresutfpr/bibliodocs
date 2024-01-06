@@ -4,22 +4,12 @@ import React from "react";
 import AutocompleteInput from "@/components/autocomplete-input";
 
 import { useForm, Controller } from "react-hook-form";
+import { articleSchema } from "@/services/schemas";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-
-const schema = yup
-  .object({
-    título: yup.string().min(3).max(25).required(),
-    conteúdo: yup.string().max(50000).required(),
-    categoria: yup.string().required(),
-  })
-  .required();
 
 const exampleOptions = new Array(100).fill(0).map((_, i) => ({
   name: `option ${i}`,
 }));
-
-type FormType = yup.InferType<typeof schema>;
 
 const MyForm = () => {
   const {
@@ -29,7 +19,7 @@ const MyForm = () => {
     setValue,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(articleSchema),
   });
 
   const onSubmit = (data: any) => {
@@ -37,24 +27,24 @@ const MyForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-base-200" onSubmit={handleSubmit(onSubmit)}>
-      <form className="hero-content flex-col">
-        <div className="form-control">
+    <div className="min-h-screen flex items-center justify-center bg-base-100" onSubmit={handleSubmit(onSubmit)}>
+      <form className="hero-content flex-col items-start max-w-lg w-full">
+        <div className="form-control w-full">
           <label className="label">
             <span className="label-text">Título</span>
           </label>
-          <input {...register("título")} />
+          <input autoComplete="off" className="input input-bordered" {...register("título")} />
           <label className="label">
             <span className="label-text text-error">
               {errors.título && <p>{errors.título.message}</p>}
             </span>
           </label>
         </div>
-        <div className="form-control">
+        <div className="form-control w-full">
           <label className="label">
             <span className="label-text">Conteúdo</span>
           </label>
-          <textarea {...register("conteúdo")} />
+          <textarea autoComplete="off" className="textarea textarea-bordered" {...register("conteúdo")} />
           <label>
             <span className="label-text text-error">
               {errors.conteúdo && <p>{errors.conteúdo.message}</p>}
@@ -62,7 +52,7 @@ const MyForm = () => {
           </label>
         </div>
 
-        <div className="form-control">
+        <div className="form-control w-full">
           <label className="label">
             <span className="label-text">Categoria</span>
           </label>
@@ -83,8 +73,8 @@ const MyForm = () => {
             </span>
           </label>
         </div>
-
-        <button type="submit">Enviar</button>
+        
+        <button className="btn mt-6" type="submit">Criar novo artigo</button>
       </form>
     </div>
   );
