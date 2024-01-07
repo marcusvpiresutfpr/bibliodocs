@@ -1,16 +1,27 @@
+import { redirect } from 'next/navigation'
+
 import prisma from "@/lib-server/prisma";
-import NewArticleClient from "./client";
+import HeroError from "@/components/hero-error";
 
 export default async function NewArticlePage() {
-  if (!prisma) return <div>Prisma Client not found</div>;
+  if (!prisma) {
+    console.error("Prisma Client not found");
+    return <HeroError message="Não foi possível se comunicar com o banco de dados" />;
+  };
 
-  const categories = await prisma.category.findMany({
-    select: { name: true },
+  const newArticle = await prisma.article.create({
+    data: {
+      title: "Novo Artigo",
+      content: "",
+      category: {
+        connectOrCreate: {
+          where: { name: "Sem categoria" },
+          create: { name: "Sem categoria" },
+        },
+      },
+    },
   });
 
-  const slugs = await prisma.article.findMany({
-    select: { slug: true },
-  });
-
-  return <NewArticleClient categories={categories} slugs={slugs} />;
+  if (!newArticle) return <HeroError message="Não foi possível criar um novo artigo" />;
+  else redirect(`/artigos/${newArticle.id}`);
 }

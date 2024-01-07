@@ -17,6 +17,6 @@ export const post = async (path: string, body: unknown, messages: Msgs = default
   return await toast.promise(request("POST", path, body), messages);
 };
 
-export const patch = async (path: string, body: unknown, messages: Msgs = defaultMsgs) => {
-  return await toast.promise(request("PATCH", path, body), messages);
+export const put = async (path: string, body: unknown, messages: Msgs = defaultMsgs) => {
+  return await toast.promise(request("PUT", path, body), messages);
 };

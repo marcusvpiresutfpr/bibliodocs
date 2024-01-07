@@ -1,37 +1,40 @@
+import { ObjectSchema } from "yup";
+
 import * as y from "yup";
 import * as pt from "@/lib-client/yup-locale";
 
 y.setLocale(pt);
 
-export const categorySchema = y.object({
-  id: y.string().max(500).default(undefined),
-  createdAt: y.date().default(undefined),
-  updatedAt: y.date().default(undefined),
+export const categorySchema: ObjectSchema<Category> = y.object({
+  id: y.string().max(500).required(),
+  createdAt: y.date().required(),
+  updatedAt: y.date().required(),
   name: y.string().required(),
-  articles: y.array(y.object()),
-  formulas: y.array(y.object()),
 });
 
-export const articleSchema = y.object({
-  id: y.string().max(500).default(undefined),
-  createdAt: y.date().default(undefined),
-  updatedAt: y.date().default(undefined),
-  views: y.number().default(undefined),
+export const articleSchema: ObjectSchema<Article> = y.object({
+  id: y.string().max(500).required(),
+  createdAt: y.date().required(),
+  updatedAt: y.date().required(),
+  views: y.number().required(),
   slug: y
     .string()
     .min(1)
     .max(50)
-    .matches(/^[a-z]+(?:-[a-z]+)*$/, 'Deve conter apenas letras minúsculas')
-    .required(),  title: y.string().required().min(1).max(50),
+    .matches(
+      /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+      "Deve conter apenas letras minúsculas e números"
+    )
+    .required(),
+  title: y.string().required().min(1).max(50),
   content: y.string().required().min(1).max(50000),
   categoryName: y.string().required().min(1).max(50),
-  category: y.object(),
 });
 
-export const formulaSchema = y.object({
-  id: y.string().max(500).default(undefined),
-  createdAt: y.date().default(undefined),
-  updatedAt: y.date().default(undefined),
+export const formulaSchema: ObjectSchema<Formula> = y.object({
+  id: y.string().max(500).required(),
+  createdAt: y.date().required(),
+  updatedAt: y.date().required(),
   name: y.string().required().min(1).max(50),
   content: y
     .object({
@@ -51,5 +54,4 @@ export const formulaSchema = y.object({
     })
     .required(),
   categoryName: y.string().required().max(50),
-  category: y.object(),
 });

@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.scrollbar-none {
+  /* Para navegadores baseados em Gecko (como o Firefox) */
+  scrollbar-width: none;
+  /* Para navegadores baseados no Trident (como o Internet Explorer e o Edge) */
+  -ms-overflow-style: none;
+}

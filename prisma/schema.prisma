@@ -39,5 +39,5 @@ model Category {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   articles  Article[]
-  Formula   Formula[]
+  formulas  Formula[]
 }

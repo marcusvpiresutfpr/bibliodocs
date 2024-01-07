@@ -1,17 +1,18 @@
 "use client";
 
-import AutocompleteInput from "@/components/autocomplete-input";
+import AutocompleteInput from "@/components/input-autocomplete";
 import React from "react";
 
 import { useForm, Controller } from "react-hook-form";
-import { articleSchema } from "@/services/schemas";
+import { articleSchema } from "@/services/yup-schemas";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 type Props = {
-  initial: ArticleSchema;
-  onSubmit: (data: ArticleSchema) => void;
+  initial: Article;
+  onSubmit: (data: Article) => void;
   categories: Pick<Category, "name">[];
   slugs: Pick<Article, "slug">[];
+  isLoading: boolean;
 };
 
 export default function ArticleForm({
@@ -19,31 +20,30 @@ export default function ArticleForm({
   initial,
   categories,
   slugs,
+  isLoading,
 }: Props) {
   const {
     register,
     handleSubmit,
     control,
     setValue,
-
+    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(articleSchema),
     defaultValues: initial,
   });
 
-  const isSlugUnique = (slug: string) => {
+  const currentSlug = watch("slug");
+
+  const isSlugUnique = React.useCallback((slug: string) => {
     // Verifica se o slug já existe na lista de slugs
     return !slugs.find((existingSlug) => existingSlug.slug === slug);
-  };
+  }, [slugs]);
 
   const handleSlugChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let value = event.target.value.trim().toLowerCase();
-    // Substitui espaços por -
+    let value = event.target.value.toLowerCase();
     value = value.replace(/\s+/g, "-");
-    // Remove caracteres especiais
-    value = value.replace(/[^a-z0-9-]/g, "");
-
     setValue("slug", value);
   };
 
@@ -53,7 +53,7 @@ export default function ArticleForm({
         className="hero-content flex-col items-start max-w-lg w-full"
         onSubmit={handleSubmit(onSubmit)}
       >
-     <div className="form-control w-full">
+        <div className="form-control w-full">
           <label className="label">
             <span className="label-text">Link</span>
           </label>
@@ -65,37 +65,11 @@ export default function ArticleForm({
           />
           <label className="label">
             <span className="label-text text-error">
-              {errors.slug && <p>{String(errors.slug.message)}</p>}
-            </span>
-          </label>
-        </div>
-        <div className="form-control w-full">
-          <label className="label">
-            <span className="label-text">Título</span>
-          </label>
-          <input
-            autoComplete="off"
-            className="input input-bordered"
-            {...register("title")}
-          />
-          <label className="label">
-            <span className="label-text text-error">
-              {errors.title && <p>{String(errors.title.message)}</p>}
-            </span>
-          </label>
-        </div>
-        <div className="form-control w-full">
-          <label className="label">
-            <span className="label-text">Conteúdo</span>
-          </label>
-          <textarea
-            autoComplete="off"
-            className="textarea textarea-bordered"
-            {...register("content")}
-          />
-          <label>
-            <span className="label-text text-error">
-              {errors.content && <p>{String(errors.content.message)}</p>}
+              {isSlugUnique(currentSlug)
+                ? errors.slug
+                  ? String(errors.slug.message)
+                  : " "
+                : "Esse link já está em uso"}
             </span>
           </label>
         </div>
@@ -114,16 +88,49 @@ export default function ArticleForm({
               />
             )}
           />
-          <label>
+          <label className="label">
             <span className="label-text text-error">
-              {errors.categoryName && (
-                <p>{String(errors.categoryName.message)}</p>
-              )}
+              {errors.categoryName ? String(errors.categoryName.message) : " "}
             </span>
           </label>
         </div>
-        <button className="btn mt-6" type="submit">
-          Criar novo artigo
+        <div className="form-control w-full">
+          <label className="label">
+            <span className="label-text">Título</span>
+          </label>
+          <input
+            autoComplete="off"
+            className="input input-bordered"
+            {...register("title")}
+          />
+          <label className="label">
+            <span className="label-text text-error">
+              {errors.title ? String(errors.title.message) : " "}
+            </span>
+          </label>
+        </div>
+        <div className="form-control w-full">
+          <label className="label">
+            <span className="label-text">Conteúdo</span>
+          </label>
+          <textarea
+            autoComplete="off"
+            className="textarea textarea-bordered"
+            {...register("content")}
+          />
+          <label className="label">
+            <span className="label-text text-error">
+              {errors.content ? String(errors.content.message) : " "}
+            </span>
+          </label>
+        </div>
+
+        <button
+          disabled={isLoading}
+          className="btn btn-primary mt-4"
+          type="submit"
+        >
+          Salvar alterações
         </button>
       </form>
     </div>

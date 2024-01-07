@@ -1,17 +1,18 @@
-import { articleSchema } from "@/services/schemas";
 import prisma from "@/lib-server/prisma";
 
+import { articleSchema } from "@/services/yup-schemas";
 import { NextResponse, NextRequest } from "next/server";
 
-export async function POST(req: Request) {
+export async function PUT(req: Request, context: { params: { id: string } }) {
   try {
     const body = await req.json();
-    const { title, content, categoryName } = await articleSchema.validate(body)
+    const { id, createdAt, updatedAt, categoryName, ...data } =
+      await articleSchema.validate(body);
 
-    const newArticle = await prisma.article.create({
+    const article = await prisma.article.update({
+      where: { id: context.params.id },
       data: {
-        title,
-        content,
+        ...data,
         category: {
           connectOrCreate: {
             where: { name: categoryName },
@@ -21,10 +22,7 @@ export async function POST(req: Request) {
       },
     });
 
-    return NextResponse.json(
-      { message: "Article Created Sussefuly", article: newArticle },
-      { status: 201 }
-    );
+    return NextResponse.json({ article }, { status: 201 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
