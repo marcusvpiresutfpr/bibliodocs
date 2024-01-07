@@ -1,5 +1,5 @@
 import prisma from "@/lib-server/prisma";
-import ArticleForm from "@/components/article-forms";
+import NewArticleClient from "./client";
 
 export default async function NewArticlePage() {
   if (!prisma) return <div>Prisma Client not found</div>;
@@ -8,14 +8,9 @@ export default async function NewArticlePage() {
     select: { name: true },
   });
 
-  return (
-    <ArticleForm
-      categories={categories}
-      initial={{
-        títlulo: "",
-        conteúdo: "",
-        categoria: "",
-      }}
-    />
-  );
+  const slugs = await prisma.article.findMany({
+    select: { slug: true },
+  });
+
+  return <NewArticleClient categories={categories} slugs={slugs} />;
 }

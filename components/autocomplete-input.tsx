@@ -19,7 +19,7 @@ export default function AutocompleteInput<TFieldValues extends FieldValues>({
   setValue,
   field,
 }: Props<TFieldValues>) {
-  const [inputValue, setInputValue] = React.useState<string>("");
+  const [inputValue, setInputValue] = React.useState<string>(field.value);
   const [suggestions, setSuggestions] = React.useState<
     { item: { name: string }; score: number }[]
   >([]);

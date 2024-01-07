@@ -1,21 +1,12 @@
+import { articleSchema } from "@/services/schemas";
 import prisma from "@/lib-server/prisma";
 
 import { NextResponse, NextRequest } from "next/server";
-import { articleSchema } from "@/services/schemas";
-import { clientToPrisma } from "@/services/client-server-parser";
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { title, content, categoryName } = clientToPrisma.article(
-      await articleSchema.validate(body)
-    );
-
-    if (!title || !content || !categoryName)
-      return NextResponse.json(
-        { message: "Missing required fields", body },
-        { status: 400 }
-      );
+    const { title, content, categoryName } = await articleSchema.validate(body)
 
     const newArticle = await prisma.article.create({
       data: {

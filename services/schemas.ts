@@ -1,25 +1,34 @@
-import { ObjectSchema } from "yup";
 import * as y from "yup";
+import * as pt from "@/lib-client/yup-locale";
 
-export const categoryShape: ObjectSchema<
-  Omit<Category, "articles" | "formulas">
-> = y.object({
+y.setLocale(pt);
+
+export const categorySchema = y.object({
   id: y.string().max(500).default(undefined),
   createdAt: y.date().default(undefined),
   updatedAt: y.date().default(undefined),
   name: y.string().required(),
+  articles: y.array(y.object()),
+  formulas: y.array(y.object()),
 });
 
-export const articleShape: ObjectSchema<Omit<Article, "category">> = y.object({
+export const articleSchema = y.object({
   id: y.string().max(500).default(undefined),
   createdAt: y.date().default(undefined),
   updatedAt: y.date().default(undefined),
-  title: y.string().required().min(1).max(50),
+  views: y.number().default(undefined),
+  slug: y
+    .string()
+    .min(1)
+    .max(50)
+    .matches(/^[a-z]+(?:-[a-z]+)*$/, 'Deve conter apenas letras minúsculas')
+    .required(),  title: y.string().required().min(1).max(50),
   content: y.string().required().min(1).max(50000),
   categoryName: y.string().required().min(1).max(50),
+  category: y.object(),
 });
 
-export const formulaShape: ObjectSchema<Omit<Formula, "category">> = y.object({
+export const formulaSchema = y.object({
   id: y.string().max(500).default(undefined),
   createdAt: y.date().default(undefined),
   updatedAt: y.date().default(undefined),
@@ -42,20 +51,5 @@ export const formulaShape: ObjectSchema<Omit<Formula, "category">> = y.object({
     })
     .required(),
   categoryName: y.string().required().max(50),
+  category: y.object(),
 });
-
-export const articleSchema: ObjectSchema<Article> = y.object({
-  ...articleShape.fields,
-  category: categoryShape.default(undefined),
-}) as ObjectSchema<Article>;
-
-export const formulaSchema: ObjectSchema<Formula> = y.object({
-  ...formulaShape.fields,
-  category: categoryShape.default(undefined),
-}) as ObjectSchema<Formula>;
-
-export const categorySchema: ObjectSchema<Category> = y.object({
-  ...categoryShape.fields,
-  articles: y.array(articleSchema).default([]),
-  formulas: y.array(formulaSchema).default([]),
-}) as ObjectSchema<Category>;

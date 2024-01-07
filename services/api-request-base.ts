@@ -11,6 +11,7 @@ export default async function request(
     const json: RequestInit = { method, headers };
     if (body) json.body = JSON.stringify(body);
 
+    console.log("json:", json);
     const response = await fetch(path, json);
     const data = await response.json();
 

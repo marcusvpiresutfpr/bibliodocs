@@ -13,6 +13,7 @@ datasource db {
 
 model Article {
   id           String   @id @default(uuid())
+  slug         String   @unique @default(uuid())
   title        String
   content      String
   views        Int      @default(0)

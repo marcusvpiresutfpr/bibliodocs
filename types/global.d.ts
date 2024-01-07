@@ -4,39 +4,27 @@ import {
   Category as PrismaCategory,
 } from "@prisma/client";
 
+import * as schema from "@/services/schemas";
+
 declare global {
-  type Article = {
-    id: string | undefined;
-    createdAt: Date | undefined;
-    updatedAt: Date | undefined;
-    title: string;
-    content: string;
-    categoryName: string;
+  type Article = PrismaArticle & { category?: Category };
+  type Formula = PrismaFormula & {
     category?: Category;
-  };
-  type Formula = {
-    id: string | undefined;
-    createdAt: Date | undefined;
-    updatedAt: Date | undefined;
-    name: string;
     content: {
       expression: string;
       parameters: {
         name: string;
-        value?: number | undefined | null | BigIntege;
-        unit?: string | undefined;
-        description?: string | undefined;
+        value: number | null | BigIntege;
+        unit: string;
+        description: string;
       }[];
-    };
-    categoryName: string;
-    category?: Category;
+    } | JSON;
   };
-  type Category = {
-    id: string | undefined;
-    createdAt: Date | undefined;
-    updatedAt: Date | undefined;
-    name: string;
+  type Category = PrismaCategory & {
     articles?: Article[];
     formulas?: Formula[];
   };
+  type ArticleSchema = schema.TypeOf<typeof schema.articleSchema>;
+  type CategorySchema = schema.TypeOf<typeof schema.categorySchema>;
+  type FormulaSchema = schema.TypeOf<typeof schema.formulaSchema>;
 }
