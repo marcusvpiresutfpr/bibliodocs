@@ -23,5 +23,5 @@ export default async function NewArticlePage() {
   });
 
   if (!newArticle) return <HeroError message="Não foi possível criar um novo artigo" />;
-  else redirect(`/artigos/${newArticle.id}`);
+  else redirect(`/artigos/editar/${newArticle.id}`);
 }

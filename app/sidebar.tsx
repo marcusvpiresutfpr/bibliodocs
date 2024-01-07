@@ -47,92 +47,94 @@ export default async function Sidebar({ children }: Props) {
     <div className="drawer lg:drawer-open">
       <input id="sidebar" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content flex flex-col items-center justify-center">
+        {children}
         <label
           htmlFor="sidebar"
-          className="btn btn-primary btn-square drawer-button lg:hidden absolute top-4 left-4 z-10"
+          className="btn btn-primary drawer-button lg:hidden"
         >
-          <Menu size={24} />
+          Open drawer
         </label>
-        {children}
       </div>
 
       {/* Sidebar */}
-      <div className="drawer-side p-4 bg-base-300 scrollbar-none">
+      <div className="drawer-side">
         <label
           htmlFor="sidebar"
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
 
-        <Link
-          href="/"
-          className="btn btn-sm btn-ghost text-primary text-lg font-bold w-full justify-start w-64"
-        >
-          <Book size={18} />
-          BIBLIODOCS
-        </Link>
+        <aside className="bg-base-300 scrollbar-none min-h-screen w-64 p-4">
+          <Link
+            href="/"
+            className="btn btn-sm btn-ghost text-primary text-lg font-bold w-full justify-start "
+          >
+            <Book size={18} />
+            BIBLIODOCS
+          </Link>
 
-        <div className="divider my-2"></div>
+          <div className="divider my-2"></div>
 
-        <ul className="menu w-64">
-          <li>
-            <Link href="/explorar">
-              <Compass size={15} />
-              Explorar
-            </Link>
-          </li>
-          <li>
-            <Link href="/dashboard">
-              <PenLine size={15} />
-              Dashboard
-            </Link>{" "}
-          </li>
-          <li>
-            <Link href="/formulas">
-              <FunctionSquare size={15} />
-              Fórmulas
-            </Link>{" "}
-          </li>
-          <li>
-            <Link href="/artigos">
-              <Book size={15} />
-              Artigos
-            </Link>
-          </li>
-          <li>
-            <a>Item 3</a>
-          </li>
-        </ul>
-
-        <div className="divider my-2" />
-
-        <ul className="menu w-64">
-          {navlinks.map((category, index) => (
-            <li key={`navbar-menu-${index}`}>
-              <details>
-                <summary>
-                  <span className="truncate">{category.name}</span>
-                </summary>
-                <ul>
-                  {category.articles?.map((a) => (
-                    <li key={a.href}>
-                      <Link href={a.href}>
-                        <span className="truncate">{a.name}</span>
-                      </Link>
-                    </li>
-                  ))}
-                  {category.formulas?.map((f) => (
-                    <li key={f.href}>
-                      <Link href={f.href}>
-                        <span className="truncate">{f.name}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </details>
+          <ul className="menu ">
+            <li>
+              <Link href="/explorar">
+                <Compass size={15} />
+                Explorar
+              </Link>
             </li>
-          ))}
-        </ul>
+            <li>
+              <Link href="/dashboard">
+                <PenLine size={15} />
+                Dashboard
+              </Link>{" "}
+            </li>
+            <li>
+              <Link href="/formulas">
+                <FunctionSquare size={15} />
+                Fórmulas
+              </Link>{" "}
+            </li>
+            <li>
+              <Link href="/artigos">
+                <Book size={15} />
+                Artigos
+              </Link>
+            </li>
+            <li>
+              <a>Item 3</a>
+            </li>
+          </ul>
+
+          <div className="divider my-2" />
+
+          <ul className="menu ">
+            {navlinks.map((category, index) => (
+              <li key={`navbar-menu-${index}`}>
+                <details>
+                  <summary>
+                    <span className="truncate">{category.name}</span>
+                  </summary>
+                  <ul>
+                    {category.articles?.map((a) => (
+                      <li key={a.href}>
+                        <Link href={a.href}>
+                          <span className="truncate">{a.name}</span>
+                        </Link>
+                      </li>
+                    ))}
+                    {category.formulas?.map((f) => (
+                      <li key={f.href}>
+                        <Link href={f.href}>
+                          <span className="truncate">{f.name}</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              </li>
+            ))}
+          </ul>
+        </aside>
       </div>
     </div>
   );
