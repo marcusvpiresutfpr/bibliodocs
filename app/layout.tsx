@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Toaster } from "react-hot-toast";
 import { Inter } from "next/font/google";
 
+import Sidebar from "@/components/sidebar";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -19,7 +20,7 @@ export default async function RootLayout({
   return (
     <html lang="pt-br" data-theme="sunset">
       <body className={inter.className}>
-        {children}
+        <Sidebar>{children}</Sidebar>
         <Toaster />
       </body>
     </html>
