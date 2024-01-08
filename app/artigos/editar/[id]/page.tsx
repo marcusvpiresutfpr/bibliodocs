@@ -9,6 +9,10 @@ type Context = {
 };
 
 export default async function NewArticle({ params: { id } }: Context) {
+  const categories = await prisma.category.findMany({
+    select: { name: true },
+  });
+
   const article = await prisma.article.findUnique({
     where: { id },
   });
@@ -18,7 +22,7 @@ export default async function NewArticle({ params: { id } }: Context) {
   return (
     <div className="hero min-h-screen bg-base-100">
       <div className="hero-content max-w-xl w-full">
-        <ArticleForms article={article} action={updateArticleWithId} />
+        <ArticleForms article={article} action={updateArticleWithId} categories={categories} />
       </div>
     </div>
   );

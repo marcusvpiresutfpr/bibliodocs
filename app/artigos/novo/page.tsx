@@ -1,11 +1,18 @@
+import prisma from "@/lib/prisma";
 import ArticleForms from "@/components/article-forms";
 
 import { createArticle } from "./actions";
 
-export default function NewArticle() {
+export default async function NewArticle() {
+  const categories = await prisma.category.findMany({
+    select: { name: true },
+  });
 
-  const debugKey = `${new Date().toISOString().replace(/[^0-9]/g, "-").slice(0, -1)}`
-
+  // TODO: Remove this debugKey
+  const debugKey = `${new Date()
+    .toISOString()
+    .replace(/[^0-9]/g, "-")
+    .slice(0, -1)}`;
   const article = {
     slug: debugKey,
     title: `Artigo ${debugKey}`,
@@ -16,8 +23,8 @@ export default function NewArticle() {
   return (
     <div className="hero min-h-screen bg-base-100">
       <div className="hero-content max-w-xl w-full">
-        <ArticleForms article={article} action={createArticle} />
-      </div>  
+        <ArticleForms categories={categories} article={article} action={createArticle} />
+      </div>
     </div>
   );
 }

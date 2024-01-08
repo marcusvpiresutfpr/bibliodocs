@@ -2,9 +2,12 @@
 
 import ArticleFormControl from "./form-control";
 import ArticleSubmitButton from "./submit-button";
+import CategoryInput from "./category-input";
+
 import { useFormState } from "react-dom";
 
 type Props = {
+  categories: { name: string }[];
   article: Article;
   action: (
     prevState: any,
@@ -18,7 +21,7 @@ type Props = {
   >;
 };
 
-export default function ArticleForms({ article, action }: Props) {
+export default function ArticleForms({ categories, article, action }: Props) {
   const [state, formAction] = useFormState(action, {});
   console.log("Resposta do servidor:", state);
 
@@ -47,11 +50,9 @@ export default function ArticleForms({ article, action }: Props) {
         label="Categoria"
         error={state?.errors?.categoryName || " "}
       >
-        <input
-          className="input input-bordered"
+        <CategoryInput
+          categories={categories}
           defaultValue={article?.categoryName}
-          autoComplete="off"
-          type="text"
           name="categoryName"
         />
       </ArticleFormControl>
