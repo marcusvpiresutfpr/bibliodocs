@@ -1,38 +1,25 @@
-import prisma from "@/lib-server/prisma";
-import UpdateArticleClient from "./client";
-import ErrorHero from "@/components/hero-error";
+import ArticleForms from "@/components/article-forms";
+import { updateArticle } from "./actions";
+import prisma from "@/lib/prisma";
 
-export default async function UpdateArticlePage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  if (!prisma)
-    return (
-      <ErrorHero message="Não foi possível se comunicar com o banco de dados" />
-    );
+type Context = {
+  params: {
+    id: string;
+  };
+};
 
-  const categories = await prisma.category.findMany({
-    select: { name: true },
-  });
-
+export default async function NewArticle({ params: { id } }: Context) {
   const article = await prisma.article.findUnique({
-    where: { id: params.id },
+    where: { id },
   });
 
-  const slugs = await prisma.article.findMany({
-    where: { NOT: { slug: article?.slug } },
-    select: { slug: true },
-  });
-
-  if (!article) return <ErrorHero message="Artigo não encontrado" />;
+  const updateArticleWithId = updateArticle.bind(null, id)
 
   return (
-    <UpdateArticleClient
-      id={params.id}
-      categories={categories}
-      slugs={slugs}
-      article={article}
-    />
+    <div className="hero min-h-screen bg-base-100">
+      <div className="hero-content max-w-xl w-full">
+        <ArticleForms article={article} action={updateArticleWithId} />
+      </div>
+    </div>
   );
 }

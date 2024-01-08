@@ -1,28 +1,23 @@
-import { redirect } from 'next/navigation'
+import ArticleForms from "@/components/article-forms";
 
-import prisma from "@/lib-server/prisma";
-import HeroError from "@/components/hero-error";
-import HeroLoading from '@/components/hero-loading';
+import { createArticle } from "./actions";
 
-export default async function NewArticlePage() {
-  if (!prisma) {
-    console.error("Prisma Client not found");
-    return <HeroError message="Não foi possível se comunicar com o banco de dados" />;
+export default function NewArticle() {
+
+  const debugKey = `${new Date().toISOString().replace(/[^0-9]/g, "-").slice(0, -1)}`
+
+  const article = {
+    slug: debugKey,
+    title: `Artigo ${debugKey}`,
+    categoryName: `Categoria ${Math.floor(Math.random() * 3)}`,
+    content: `Conteúdo ${debugKey}`,
   };
 
-  const newArticle = await prisma.article.create({
-    data: {
-      title: "Novo Artigo",
-      content: "",
-      category: {
-        connectOrCreate: {
-          where: { name: "Sem categoria" },
-          create: { name: "Sem categoria" },
-        },
-      },
-    },
-  });
-
-  if (!newArticle) return <HeroError message="Não foi possível criar um novo artigo" />;
-  else redirect(`/artigos/editar/${newArticle.id}`);
+  return (
+    <div className="hero min-h-screen bg-base-100">
+      <div className="hero-content max-w-xl w-full">
+        <ArticleForms article={article} action={createArticle} />
+      </div>  
+    </div>
+  );
 }
