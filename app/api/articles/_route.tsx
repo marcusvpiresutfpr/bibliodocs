@@ -1,5 +1,6 @@
 import prisma from "@/lib-server/prisma";
 import errorHandler from "@/lib-server/error-handler";
+import stt from "@/services-server/status-code";
 
 import { NextResponse, NextRequest } from "next/server";
 import { Prisma } from "@prisma/client";
@@ -19,7 +20,7 @@ export async function GET(request: NextRequest) {
 
     // Returning a well-structured JSON response with status 200 (OK)
     return new NextResponse(JSON.stringify({ articles }), {
-      status: 200,
+      status: stt.success,
     });
   } catch (error) {
     errorHandler(error, request);
@@ -41,7 +42,7 @@ export async function POST(request: NextRequest) {
 
     // Returning a well-structured JSON response with status 200 (OK)
     return new NextResponse<PostResponse>(JSON.stringify({ result }), {
-      status: 200,
+      status: stt.,
     });
   } catch (error) {
     errorHandler(error, request);
@@ -88,6 +89,6 @@ export async function DELETE(request: NextRequest) {
       status: 200,
     });
   } catch (error) {
-    errorHandler(error, request)
+    errorHandler(error, request);
   }
 }
