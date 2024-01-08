@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 
 import prisma from "@/lib-server/prisma";
 import HeroError from "@/components/hero-error";
+import HeroLoading from '@/components/hero-loading';
 
 export default async function NewArticlePage() {
   if (!prisma) {

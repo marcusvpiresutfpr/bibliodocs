@@ -23,13 +23,13 @@ export default async function UpdateArticlePage({
   return (
     <article className="prose-sm md:prose my-44 w-full">
       <h1>{article.title}</h1>
-        <div className="flex items-center space-x-4 mb-5">
-          <div className="badge badge-outline">{article.createdAt.toDateString()}</div>
-          <span>{article.views} visualisações</span>
-        </div>
+      <div className="divider divider-start mb-10 ">
+      </div>
       <Remote source={article.content} />
-      <Link className='btn btn-sm mt-10' href={`artigos/editar/${article.id}`}><PenLine size={15} />
-       Editar artigo</Link>
-    </article> 
+      <Link className="btn btn-sm mt-10" href={`/artigos/editar/${article.id}`}>
+        <PenLine size={15} />
+        Editar artigo
+      </Link>
+    </article>
   );
 }

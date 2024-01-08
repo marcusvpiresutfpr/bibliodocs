@@ -50,9 +50,9 @@ export default async function Sidebar({ children }: Props) {
         {children}
         <label
           htmlFor="sidebar"
-          className="btn btn-primary drawer-button lg:hidden"
+          className="absolute top-4 left-4 btn btn-sm btn-square drawer-button lg:hidden"
         >
-          Open drawer
+          <Menu size={18} />
         </label>
       </div>
 
@@ -64,7 +64,7 @@ export default async function Sidebar({ children }: Props) {
           className="drawer-overlay"
         ></label>
 
-        <aside className="bg-base-300 scrollbar-none min-h-screen w-64 p-4">
+        <aside className="bg-base-300 overflow-auto h-screen w-64 p-4 scrollbar-none">
           <Link
             href="/"
             className="btn btn-sm btn-ghost text-primary text-lg font-bold w-full justify-start "
@@ -75,7 +75,7 @@ export default async function Sidebar({ children }: Props) {
 
           <div className="divider my-2"></div>
 
-          <ul className="menu ">
+          <ul className="menu scrollbar-none">
             <li>
               <Link href="/explorar">
                 <Compass size={15} />
@@ -99,9 +99,6 @@ export default async function Sidebar({ children }: Props) {
                 <Book size={15} />
                 Artigos
               </Link>
-            </li>
-            <li>
-              <a>Item 3</a>
             </li>
           </ul>
 

@@ -20,3 +20,7 @@ export const post = async (path: string, body: unknown, messages: Msgs = default
 export const put = async (path: string, body: unknown, messages: Msgs = defaultMsgs) => {
   return await toast.promise(request("PUT", path, body), messages);
 };
+
+export const del = async (path: string, body: unknown, messages: Msgs = defaultMsgs) => {
+  return await toast.promise(request("DELETE", path, body), messages);
+};

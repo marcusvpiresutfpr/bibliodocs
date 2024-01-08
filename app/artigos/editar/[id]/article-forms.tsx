@@ -6,6 +6,7 @@ import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { articleSchema } from "@/services/yup-schemas";
 import { yupResolver } from "@hookform/resolvers/yup";
+import RandomData from "./debug-generator";
 
 type Props = {
   initial: Article;
@@ -36,10 +37,13 @@ export default function ArticleForm({
 
   const currentSlug = watch("slug");
 
-  const isSlugUnique = React.useCallback((slug: string) => {
-    // Verifica se o slug já existe na lista de slugs
-    return !slugs.find((existingSlug) => existingSlug.slug === slug);
-  }, [slugs]);
+  const isSlugUnique = React.useCallback(
+    (slug: string) => {
+      // Verifica se o slug já existe na lista de slugs
+      return !slugs.find((existingSlug) => existingSlug.slug === slug);
+    },
+    [slugs]
+  );
 
   const handleSlugChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let value = event.target.value.toLowerCase();
@@ -48,9 +52,9 @@ export default function ArticleForm({
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base-100">
+    <div className="min-h-screen flex items-center justify-center w-full">
       <form
-        className="hero-content flex-col items-start max-w-lg w-full"
+        className="hero-content flex-col items-start max-w-2xl w-full"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="form-control w-full">
@@ -125,13 +129,28 @@ export default function ArticleForm({
           </label>
         </div>
 
-        <button
-          disabled={isLoading}
-          className="btn btn-primary mt-4"
-          type="submit"
-        >
-          Salvar alterações
-        </button>
+        <div className="flex space-x-2">
+          <button
+            disabled={isLoading}
+            className="btn btn-primary"
+            type="submit"
+          >
+            Salvar alterações
+          </button>
+          <button
+            disabled={isLoading}
+            className="btn"
+            onClick={() => {
+              const data = RandomData();
+              setValue("slug", data.slug);
+              setValue("categoryName", data.categoryName);
+              setValue("title", data.title);
+              setValue("content", data.content);
+            }}
+          >
+            Exemplo para debug
+          </button>
+        </div>
       </form>
     </div>
   );

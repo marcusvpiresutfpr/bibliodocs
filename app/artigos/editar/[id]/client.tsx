@@ -3,7 +3,7 @@
 import React from "react";
 
 import ArticleForm from "@/app/artigos/editar/[id]/article-forms";
-import { put } from "@/services/api-request-toast";
+import { put } from "@/lib-client/api-request-toast";
 
 type Props = {
   id: string;

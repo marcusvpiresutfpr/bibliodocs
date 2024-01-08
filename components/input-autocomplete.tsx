@@ -51,7 +51,7 @@ export default function AutocompleteInput<TFieldValues extends FieldValues>({
 
   React.useEffect(() => {
     setValue(field.name as Path<TFieldValues>, inputValue);
-  }, [inputValue, setValue, field.name]);
+  }, [inputValue, setValue, field]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
