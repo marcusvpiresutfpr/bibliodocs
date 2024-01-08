@@ -10,4 +10,5 @@ declare global {
   type Article = PrismaArticle;
   type Formula = PrismaFormula;
   type Category = PrismaCategory;
+  type ApiError = { error: string, details?: unknown };
 }

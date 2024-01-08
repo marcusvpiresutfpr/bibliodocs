@@ -1,33 +1,91 @@
 import prisma from "@/lib-server/prisma";
+import errorHandler from "@/lib-server/error-handler";
 
-import { articleSchema } from "@/services/yup-schemas";
 import { NextResponse, NextRequest } from "next/server";
+import { Prisma } from "@prisma/client";
 
-export async function PUT(req: Request, context: { params: { id: string } }) {
+type Context = {
+  params: {
+    id: string;
+  };
+};
+
+export async function GET(request: NextRequest, context: Context) {
   try {
-    const body = await req.json();
-    const { id, createdAt, updatedAt, categoryName, ...data } =
-      await articleSchema.validate(body);
+    const { id } = context.params;
 
-    const article = await prisma.article.update({
-      where: { id: context.params.id },
-      data: {
-        ...data,
-        category: {
-          connectOrCreate: {
-            where: { name: categoryName },
-            create: { name: categoryName },
-          },
-        },
-      },
+    // Retrieve the article with the specified ID
+    const article = await prisma.article.findUnique({
+      where: { id },
     });
 
-    return NextResponse.json({ article }, { status: 201 });
+    if (!article) {
+      // Return a 404 response if the article is not found
+      return new NextResponse(JSON.stringify({ error: "Article not found" }), {
+        status: 404,
+      });
+    }
+
+    // Returning a well-structured JSON response with status 200 (OK)
+    return new NextResponse(JSON.stringify({ article }), {
+      status: 200,
+    });
   } catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      { message: "Internal Server Error", error },
-      { status: 201 }
-    );
+    errorHandler(error, request);
+  }
+}
+
+type PutRequest = { args: Omit<Prisma.ArticleUpdateArgs, "where"> };
+
+export async function PUT(request: NextRequest, context: Context) {
+  try {
+    const { id } = context.params;
+
+    const body = (await request.json()) as PutRequest;
+    const args = body.args || {};
+
+    // Ensure that the article with the specified ID exists
+    const article = await prisma.article.update({
+      where: { id },
+      ...args,
+    });
+
+    if (!article) {
+      // Return a 404 response if the article is not found
+      return new NextResponse(JSON.stringify({ error: "Article not found" }), {
+        status: 404,
+      });
+    }
+
+    // Returning a well-structured JSON response with status 200 (OK)
+    return new NextResponse(JSON.stringify({ article }), {
+      status: 200,
+    });
+  } catch (error) {
+    errorHandler(error, request);
+  }
+}
+
+export async function DELETE(request: NextRequest, context: Context) {
+  try {
+    const { id } = context.params;
+
+    // Ensure that the article with the specified ID exists
+    const article = await prisma.article.delete({
+      where: { id },
+    });
+
+    if (!article) {
+      // Return a 404 response if the article is not found
+      return new NextResponse(JSON.stringify({ error: "Article not found"}), {
+        status: 404,
+      });
+    }
+    // Returning a well-structured JSON response with status 200 (OK)
+    return new NextResponse(JSON.stringify({ article }), {
+      status: 200,
+    });
+  } catch (error) {
+    errorHandler(error, request);
   }
 }
