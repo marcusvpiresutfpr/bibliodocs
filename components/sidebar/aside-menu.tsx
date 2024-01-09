@@ -1,39 +1,37 @@
 import SidebarDropdown from "./dropdown";
 import prisma from "@/lib/prisma";
 
-import { Suspense } from "react";
-
 export default async function SidebarAsideMenu() {
-  const categories = await prisma.category.findMany({
-    select: { name: true, articles: { select: { title: true, slug: true } } },
-  });
+  const asideMenu = await (async () => {
+    const categories = await prisma.category.findMany({
+      select: { name: true, articles: { select: { title: true, slug: true } } },
+    });
 
-  const asideMenu = categories.map((c) => {
-    const menuItems = c.articles?.map((a) => ({
-      name: a.title,
-      href: `/articles/${a.slug}`,
-    }));
+    // Simulate loading
+    // await new Promise((resolve) => setTimeout(resolve, 10000));
 
-    return {
-      menuTitle: c.name,
-      menuItems,
-    };
-  });
+    return categories.map((c) => {
+      const menuItems = c.articles?.map((a) => ({
+        name: a.title,
+        href: `/articles/${a.slug}`,
+      }));
+
+      return {
+        menuTitle: c.name,
+        menuItems,
+      };
+    });
+  })();
 
   return (
     <aside>
-      <ul className="menu">
-        {asideMenu.map((menu, index) => (
-          <Suspense
-            key={`sidebar-aside-menu-${index}`}
-            fallback={<div className="skeleton w-full h-32"></div>}
-          >
-            <li>
+        <ul className="menu">
+          {asideMenu.map((menu, index) => (
+            <li key={`sidebar-aside-menu-${index}`}>
               <SidebarDropdown menu={menu} />
             </li>
-          </Suspense>
-        ))}
-      </ul>
+          ))}
+        </ul>
     </aside>
   );
 }

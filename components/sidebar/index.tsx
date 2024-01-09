@@ -25,7 +25,7 @@ export default async function Sidebar({ children }: Props) {
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-
+        
         <SidebarContent />
       </div>
     </div>

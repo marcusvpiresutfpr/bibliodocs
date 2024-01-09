@@ -1,5 +1,6 @@
 import SidebarAsideMenu from "./aside-menu";
 import Link from "next/link";
+import { Suspense } from "react";
 
 import { Book, Compass, Newspaper, PenSquare } from "lucide-react";
 
@@ -40,7 +41,26 @@ export default async function SidebarContent() {
 
       <div className="divider my-2" />
 
-      <SidebarAsideMenu />
+      <Suspense
+        fallback={
+          <aside>
+            <ul className="menu">
+              {Array.from(Array(5).keys()).map((_, index) => (
+                <li key={`sidebar-aside-skeleton-menu-${index}`}>
+                  <details>
+                    <summary>
+                      <span className={`skeleton w-36 h-4`} />
+                    </summary>
+                    <ul></ul>
+                  </details>
+                </li>
+              ))}
+            </ul>
+          </aside>
+        }
+      >
+        <SidebarAsideMenu />
+      </Suspense>
     </nav>
   );
 }
