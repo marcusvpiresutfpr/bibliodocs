@@ -3,7 +3,7 @@ import Fuse from "fuse.js";
 
 type Props = {
   categories: { name: string }[];
-  defaultValue: string;
+  defaultValue?: string ;
   name: string;
 };
 

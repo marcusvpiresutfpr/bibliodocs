@@ -1,7 +1,11 @@
 import { Send } from "lucide-react";
 import { useFormStatus } from "react-dom";
 
-export default function ArticleSubmitButton() {
+type Props = {
+  buttonMessage: string;
+};
+
+export default function ArticleSubmitButton({ buttonMessage }: Props) {
   const { pending } = useFormStatus();
 
   return (
@@ -9,7 +13,7 @@ export default function ArticleSubmitButton() {
       {pending ? (
         <span className="loading loading-spinner"></span>
       ) : (
-        "Novo Artigo"
+        buttonMessage
       )}
     </button>
   );

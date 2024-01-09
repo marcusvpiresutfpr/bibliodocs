@@ -17,12 +17,14 @@ export default async function NewArticle({ params: { id } }: Context) {
     where: { id },
   });
 
+  if (!article) return <div>Artigo não encontrado</div>;  
+
   const updateArticleWithId = updateArticle.bind(null, id)
 
   return (
     <div className="hero min-h-screen bg-base-100">
       <div className="hero-content max-w-xl w-full">
-        <ArticleForms article={article} action={updateArticleWithId} categories={categories} />
+        <ArticleForms buttonMessage="Atualizar Artigo" article={article} action={updateArticleWithId} categories={categories} />
       </div>
     </div>
   );

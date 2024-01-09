@@ -13,7 +13,7 @@ export default async function SidebarAsideMenu() {
     return categories.map((c) => {
       const menuItems = c.articles?.map((a) => ({
         name: a.title,
-        href: `/articles/${a.slug}`,
+        href: `/artigos/leitor/${a.slug}`,
       }));
 
       return {

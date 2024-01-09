@@ -75,7 +75,7 @@ sensisse. [Sive](http://www.hicterga.org/animosus-et) equam aurumque lecti
   return (
     <div className="hero min-h-screen bg-base-100">
       <div className="hero-content max-w-xl w-full">
-        <ArticleForms categories={categories} article={article} action={createArticle} />
+        <ArticleForms buttonMessage={"Novo Artigo"} categories={categories} article={article} action={createArticle} />
       </div>
     </div>
   );

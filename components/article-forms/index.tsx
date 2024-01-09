@@ -7,8 +7,9 @@ import CategoryInput from "./category-input";
 import { useFormState } from "react-dom";
 
 type Props = {
+  buttonMessage: string;
   categories: { name: string }[];
-  article: Article;
+  article: Partial<Article>;
   action: (
     prevState: any,
     formData: FormData
@@ -21,7 +22,7 @@ type Props = {
   >;
 };
 
-export default function ArticleForms({ categories, article, action }: Props) {
+export default function ArticleForms({ buttonMessage, categories, article, action }: Props) {
   const [state, formAction] = useFormState(action, {});
   console.log("Resposta do servidor:", state);
 
@@ -68,7 +69,7 @@ export default function ArticleForms({ categories, article, action }: Props) {
       </ArticleFormControl>
 
       <div className="divider"></div>
-      <ArticleSubmitButton />
+      <ArticleSubmitButton buttonMessage={buttonMessage}  />
     </form>
   );
 }
