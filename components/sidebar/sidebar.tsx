@@ -5,7 +5,7 @@ import { Book, Compass, Newspaper, PenSquare } from "lucide-react";
 
 export default async function SidebarContent() {
   return (
-    <nav className="bg-base-300 overflow-auto h-screen w-64 p-4 scrollbar-none">
+    <nav className="bg-primary-content overflow-auto h-screen w-64 px-4 py-6 scrollbar-none">
       <Link
         href="/"
         className="btn btn-sm btn-ghost text-primary text-lg font-bold w-full justify-start"

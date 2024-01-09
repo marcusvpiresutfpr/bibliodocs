@@ -18,7 +18,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-br" data-theme="sunset">
+    <html lang="pt-br" data-theme="forest">
       <body className={inter.className}>
         <Sidebar>{children}</Sidebar>
         <Toaster />

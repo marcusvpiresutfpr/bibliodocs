@@ -27,7 +27,7 @@ export const articleSchema = z
       .max(50)
       .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/i),
     title: z.string().min(3).max(50),
-    content: z.string().min(3).max(500),
+    content: z.string().min(3).max(50000),
     categoryName: z.string().min(3).max(50),
   })
   .refine(async (data: { slug: string; id: string | null }) => {
