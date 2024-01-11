@@ -47,7 +47,8 @@
     "app\\favicon.ico": true,
     "mdx-components.tsx": true,
     "next.config.mjs": true,
-    ".env": true
+    ".env": true,
+    "yarn.lock": true
   },
   "hidefiles.selectedProfile": "Show All Files",
   "hide-files.files": [

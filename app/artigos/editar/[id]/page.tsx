@@ -1,5 +1,5 @@
 import ArticleForms from "@/components/article-forms";
-import { updateArticle } from "./actions";
+import updateArticle from "./action";
 import prisma from "@/lib/prisma";
 
 type Context = {
@@ -17,15 +17,16 @@ export default async function NewArticle({ params: { id } }: Context) {
     where: { id },
   });
 
-  if (!article) return <div>Artigo não encontrado</div>;  
+  if (!article) return <div>Artigo não encontrado</div>;
 
-  const updateArticleWithId = updateArticle.bind(null, id)
+  const updateArticleWithId = updateArticle.bind(null, id);
 
   return (
-    <div className="hero min-h-screen bg-base-100">
-      <div className="hero-content max-w-xl w-full">
-        <ArticleForms buttonMessage="Atualizar Artigo" article={article} action={updateArticleWithId} categories={categories} />
-      </div>
-    </div>
+    <ArticleForms
+      button="Atualizar Artigo"
+      article={article}
+      action={updateArticleWithId}
+      categories={categories}
+    />
   );
 }

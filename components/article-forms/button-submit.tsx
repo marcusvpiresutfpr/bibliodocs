@@ -5,7 +5,7 @@ type Props = {
   buttonMessage: string;
 };
 
-export default function ArticleSubmitButton({ buttonMessage }: Props) {
+export default function ArticleButtonSubmit({ buttonMessage }: Props) {
   const { pending } = useFormStatus();
 
   return (

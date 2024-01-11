@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Toaster } from "react-hot-toast";
 import { Inter } from "next/font/google";
 
 import Sidebar from "@/components/sidebar";
@@ -21,7 +20,6 @@ export default async function RootLayout({
     <html lang="pt-br" data-theme="forest">
       <body className={inter.className}>
         <Sidebar>{children}</Sidebar>
-        <Toaster />
       </body>
     </html>
   );
